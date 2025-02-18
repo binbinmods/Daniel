@@ -1,9 +1,9 @@
 {
-    "name": "<Character>_The_<Subclass>",
-    "version_number": "1.0.0",
-    "website_url": "https://github.com/binbinmods/<githubrepo>",
-    "description": "New Hero Mod for <Character>, the <Subclass>, a <Description>.",
+    "name": "Daniel_The_Redeemer",
+    "version_number": "0.1.0",
+    "website_url": "https://github.com/binbinmods/theredeemer",
+    "description": "New Hero Mod for Daniel, the Redeemer, a fiendish mage who is proficient in the way of the healer.",
     "dependencies": [
-        "meds-Obeliskial_Content-1.4.0"
+        "meds-Obeliskial_Content-1.5.0"
     ]
 }

@@ -6,7 +6,7 @@ using Obeliskial_Essentials;
 using System.IO;
 using UnityEngine;
 using System;
-using static TheSubclass.Traits;
+using static Daniel.Traits;
 using BepInEx.Configuration;
 
 namespace Daniel

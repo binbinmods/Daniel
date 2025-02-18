@@ -1,0 +1,15 @@
+{
+    "BaseSkin": true,
+    "PerkLevel": 0,
+    "SkinGO": "skindaniel",
+    "SkinID": "redeemerbase",
+    "SkinName": "Default",
+    "SkinOrder": 0,
+    "SkinSubclass": "redeemer",
+    "Sku": "",
+    "SpritePortrait": "danielPortrait",
+    "SpritePortraitGrande": "danielPortraitGrande",
+    "SpriteSilueta": "danielSilueta",
+    "SpriteSiluetaGrande": "danielSiluetaGrande",
+    "SteamStat": ""
+}

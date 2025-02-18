@@ -6,7 +6,7 @@
 	<Product>Daniel</Product>
     <AssemblyName>com.binbin.Daniel</AssemblyName>
     <Description>Daniel, The Redeemer</Description>
-    <Version>1.0.0</Version>
+    <Version>0.1.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -33,10 +33,10 @@
       <HintPath>../../../!libs/BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="com.stiffmeds.obeliskialessentials">
-      <HintPath>../../../!libs/Obeliskial_Essentials.dll</HintPath>
+      <HintPath>../../../!libs/com.stiffmeds.obeliskialessentials.dll</HintPath>
     </Reference>
     <Reference Include="com.stiffmeds.obeliskialcontent">
-      <HintPath>../../../!libs/Obeliskial_Content.dll</HintPath>
+      <HintPath>../../../!libs/com.stiffmeds.obeliskialcontent.dll</HintPath>
     </Reference>
   </ItemGroup>
 

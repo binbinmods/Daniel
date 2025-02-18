@@ -1,0 +1,15 @@
+{
+    "Card0": "cleansingfire",
+    "Card1": "innercombustion",
+    "Card2": "darkpact",
+    "Card3": "redemption",
+    "Card4": "shadowflame",
+    "Card5": "",
+    "CardSpecial0": "",
+    "CardSpecial1": "",
+    "PackClass": "mage",
+    "PackID": "daniel",
+    "PackName": "Daniel",
+    "PerkList": [],
+    "RequiredClass": "redeemer"
+}
