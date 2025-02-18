@@ -73,7 +73,7 @@ namespace Daniel
         /// <param name="_target"></param>
         /// <param name="healAmount"></param>
         /// <param name="traitName"></param>
-        public static void TraitHealHero(ref Character _character, ref Hero _target, int healAmount, string traitName)
+        public static void TraitHealHero(ref Hero _character, Hero _target, int healAmount, string traitName)
         {
             if (_target == null || !_target.IsHero || !_target.Alive)
             {
@@ -282,13 +282,13 @@ namespace Daniel
         /// <param name="_castedCard">Card that was class</param>
         /// <param name="class1">Card Class that could be reduced</param>
         /// <param name="class2">Card Class that could be reduced</param>
-        /// <param name="_trait">Trait this is attributable to</param>
-        public static void Duality(ref Character _character, ref CardData _castedCard, Enums.CardClass class1, Enums.CardClass class2, string _trait)
+        /// <param name="traitId">Trait this is attributable to</param>
+        public static void Duality(ref Character _character, ref CardData _castedCard, Enums.CardClass class1, Enums.CardClass class2, string traitId, int bonusActivations = 0)
         {
             if (!((Object)MatchManager.Instance != (Object)null) || !((Object)_castedCard != (Object)null))
                 return;
-            TraitData traitData = Globals.Instance.GetTraitData(_trait);
-            if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(_trait) && MatchManager.Instance.activatedTraits[_trait] > traitData.TimesPerTurn - 1)
+            TraitData traitData = Globals.Instance.GetTraitData(traitId);
+            if (MatchManager.Instance.activatedTraits != null && MatchManager.Instance.activatedTraits.ContainsKey(traitId) && MatchManager.Instance.activatedTraits[traitId] > (traitData.TimesPerTurn - 1 + bonusActivations))
                 return;
             for (int index1 = 0; index1 < 2; ++index1)
             {
@@ -330,16 +330,17 @@ namespace Daniel
                     CardData cardData1 = cardDataList.Count != 1 ? cardDataList[MatchManager.Instance.GetRandomIntRange(0, cardDataList.Count, "trait")] : cardDataList[0];
                     if (!((Object)cardData1 != (Object)null))
                         break;
-                    if (!MatchManager.Instance.activatedTraits.ContainsKey(_trait))
-                        MatchManager.Instance.activatedTraits.Add(_trait, 1);
+                    if (!MatchManager.Instance.activatedTraits.ContainsKey(traitId))
+                        MatchManager.Instance.activatedTraits.Add(traitId, 1);
                     else
-                        ++MatchManager.Instance.activatedTraits[_trait];
+                        ++MatchManager.Instance.activatedTraits[traitId];
                     MatchManager.Instance.SetTraitInfoText();
                     int num2 = 1;
                     cardData1.EnergyReductionTemporal += num2;
                     MatchManager.Instance.GetCardFromTableByIndex(cardData1.InternalId).ShowEnergyModification(-num2);
                     MatchManager.Instance.UpdateHandCards();
-                    _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitData.TraitName) + TextChargesLeft(MatchManager.Instance.activatedTraits[_trait], traitData.TimesPerTurn), Enums.CombatScrollEffectType.Trait);
+                    _character.HeroItem.ScrollCombatText(Texts.Instance.GetText("traits_" + traitData.TraitName) + TextChargesLeft(MatchManager.Instance.activatedTraits[traitId], traitData.TimesPerTurn + bonusActivations), Enums.CombatScrollEffectType.Trait);
+                    
                     MatchManager.Instance.CreateLogCardModification(cardData1.InternalId, MatchManager.Instance.GetHero(_character.HeroIndex));
                     break;
                 }

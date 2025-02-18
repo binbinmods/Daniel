@@ -7,6 +7,7 @@ using UnityEngine;
 using static Daniel.CustomFunctions;
 using static Daniel.Plugin;
 
+
 namespace Daniel
 {
     [HarmonyPatch]
@@ -15,12 +16,13 @@ namespace Daniel
         // list of your trait IDs
         public static string heroName = "<heroName>";
 
-        public static string subclassname = "<subclassname>";
+        public static string subclassname = "redeemer";
 
-        public static string[] simpleTraitList = ["trait0", "trait1a", "trait1b", "trait2a", "trait2b", "trait3a", "trait3b", "trait4a", "trait4b"];
+        public static List<string> simpleTraitList = ["trait0", "trait1a", "trait1b", "trait2a", "trait2b", "trait3a", "trait3b", "trait4a", "trait4b"];
 
-        public static string[] myTraitList = simpleTraitList; //(string[])simpleTraitList.Select(trait => heroName + trait); // Needs testing
+        public static List<string> myTraitList = (List<string>)simpleTraitList.Select(trait => subclassName + trait); // Needs testing
 
+        
         static string trait0 = myTraitList[0];
         static string trait2a = myTraitList[3];
         static string trait2b = myTraitList[4];
@@ -50,66 +52,108 @@ namespace Daniel
             List<string> heroHand = MatchManager.Instance.GetHeroHand(_character.HeroIndex);
             Hero[] teamHero = MatchManager.Instance.GetTeamHero();
             NPC[] teamNpc = MatchManager.Instance.GetTeamNPC();
-
+            
+            LogDebug("Testing MyTraitList");
+            LogDebug(string.Join(", ", myTraitList));
+            if (!IsLivingHero(_character))
+            {
+                return;
+            }
             if (_trait == trait0)
-            { // TODO trait 0
+            { // When you suffer Fire or Shadow damage, heal all heroes for 20% of that amount and gain 1 Zeal. -This heal does not gain bonuses-
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
-                LogDebug($"Handling Trait {traitId}: {traitName}");
-
-                if (!IsLivingHero(_character))
-                {
-                    return;
-                }
-                int bonusActivations = _character.HaveTrait(trait4a) ? 1 : 0;
-                if (CanIncrementTraitActivations(_trait, bonusActivations:bonusActivations))
-                {
-                    IncrementTraitActivations(_trait);
-                    DisplayRemainingChargesForTrait(ref _character, traitData);
-
-                }
+                            
+                
+                
+                
             }
 
 
             else if (_trait == trait2a)
-            { // TODO trait 2a
+            { // When you play a Healer card, reduce the cost of the highest cost Mage card in your hand by 1 until discarded. When you play a Mage card, reduce the cost of the highest cost Healer card in your hand by 1 until discarded. (3 times/turn)
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
+                int bonusActivations = _character.HaveTrait(trait4a) ? 1 : 0;
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-                DisplayTraitScroll(ref _character, traitData);
+                Duality(ref _character,ref _castedCard, Enums.CardClass.Mage, Enums.CardClass.Healer, traitId, bonusActivations:bonusActivations);
 
             }
 
 
 
             else if (_trait == trait2b)
-            { // TODO trait 2b
+            { // When you play a "Fire Spell" card Purge 1, "Holy Spell" card gain 1 Bless, "Shadow Spell" card increase curse charges on all monsters by 10%. (6 times/turn)
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-                DisplayTraitScroll(ref _character, traitData);
+
+                if (CanIncrementTraitActivations(_trait))
+                {
+                    if (_castedCard.HasCardType(Enums.CardType.Fire_Spell))
+                    {
+                        LogDebug($"Handling Trait {traitId}: Purging");
+
+                        Character randomNpc = GetRandomCharacter(teamNpc);
+                        randomNpc.DispelAuras(1);
+
+                        IncrementTraitActivations(_trait);
+                        DisplayRemainingChargesForTrait(ref _character, traitData);
+                        DisplayTraitScroll(ref _character, traitData);
+                    }
+                    if (_castedCard.HasCardType(Enums.CardType.Holy_Spell))
+                    {
+                        LogDebug($"Handling Trait {traitId}: Gaining Bless");
+                        _character.SetAuraTrait(_character,"bless",1);
+
+                        IncrementTraitActivations(_trait);
+                        DisplayRemainingChargesForTrait(ref _character, traitData);
+                        DisplayTraitScroll(ref _character, traitData);
+                    }
+                    if (_castedCard.HasCardType(Enums.CardType.Shadow_Spell))
+                    {
+                        LogDebug($"Handling Trait {traitId}: Increasing Curses");
+                        foreach(NPC npc in teamNpc)
+                        {
+                            if(IsLivingNPC(npc))
+                            {
+                                ModifyAllAurasOrCursesByPercent(10,IsAuraOrCurse.Curse,npc,_character);
+                            }
+                        }
+                        IncrementTraitActivations(_trait);
+                        DisplayRemainingChargesForTrait(ref _character, traitData);
+                        DisplayTraitScroll(ref _character, traitData);
+                    }
+                }
 
             }
 
             else if (_trait == trait4a)
-            { // TODO trait 4a
+            { // Dark +2. Dark on heroes don't explode, and increase all healing received by 1% per charge. Healer Duality can be activated 4 times per turn.
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
-                LogDebug($"Handling Trait {traitId}: {traitName}");
+                // LogDebug($"Handling Trait {traitId}: {traitName}");
+                // Handled in GACM
 
             }
 
             else if (_trait == trait4b)
-            { // TODO trait 4b
+            { // At the end of your turn, grant 2 Bless and 2 Zeal to all heroes, and transform all Dark charges on heroes into Burn charges.
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
                 LogDebug($"Handling Trait {traitId}: {traitName}");
-                if (CanIncrementTraitActivations(_trait))
+                foreach(Hero hero in teamHero)
                 {
-                    IncrementTraitActivations(_trait);
-                    DisplayRemainingChargesForTrait(ref _character, traitData);
-
-                }
+                    if(!IsLivingHero(hero))
+                    {
+                        continue;
+                    }
+                    hero.SetAuraTrait(_character,"bless",2);
+                    hero.SetAuraTrait(_character,"zeal",2);
+                    int nDark = hero.GetAuraCharges("dark");
+                    hero.HealAuraCurse(GetAuraCurseData("dark"));
+                    hero.SetAuraTrait(_character,"burn",nDark);
+                }                
             }
 
         }
@@ -134,78 +178,58 @@ namespace Daniel
             return true;
         }
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(Character), "SetEvent")]
-        public static void SetEventPrefix(ref Character __instance, ref Enums.EventActivation theEvent, Character target = null)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.ScrollCombatTextDamageNew))]
+        public static void ScrollCombatTextDamageNewPostfix(ref CharacterItem __instance, CastResolutionForCombatText _cast)
         {
-            /*if (theEvent == Enums.EventActivation.AuraCurseSet && !__instance.IsHero && target != null && target.IsHero && target.HaveTrait("ulfvitrconductor") && __instance.HasEffect("spark"))
-            { // if NPC has wet applied to them, deal 50% of their sparks as indirect lightning damage
-                __instance.IndirectDamage(Enums.DamageType.Lightning, Functions.FuncRoundToInt((float)__instance.GetAuraCharges("spark") * 0.5f));
-            }
-            if (theEvent == Enums.EventActivation.BeginTurn && __instance.IsHero && (__instance.HaveTrait("pestilyhealingtoxins")||__instance.HaveTrait("pestilytoxichealing"))){
-                level5ActivationCounter=0;
-                // Plugin.Log.LogInfo("Binbin - PestilyBiohealer - Reset Activation Counter: "+ level5ActivationCounter);
+            LogDebug("ScrollCombatTextDamageNewPostfix");
+            string traitId = trait0;
+            string traitName = "Repentant";
+            if (MatchManager.Instance==null)
+            {
+                return;
             }
             
-            */
-        }
+            LogDebug($"Handling Trait {traitId}: {traitName}, pre traverse");
 
+            Hero[] teamHero = MatchManager.Instance.GetTeamHero();
+            Hero _hero = Traverse.Create(__instance).Field("_hero").GetValue<Hero>();
+            Enums.DamageType damageType = _cast.damageType;
+            Enums.DamageType damageType2 = _cast.damageType2;
 
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(AtOManager), "HeroLevelUp")]
-        public static bool HeroLevelUpPrefix(ref AtOManager __instance, Hero[] ___teamAtO, int heroIndex, string traitId)
-        {
-            Hero hero = ___teamAtO[heroIndex];
-            Plugin.Log.LogDebug(debugBase + "Level up before conditions for subclass " + hero.SubclassName + " trait id " + traitId);
-
-            string traitOfInterest = myTraitList[4]; //Learn real magic
-            if (hero.AssignTrait(traitId))
+            if(damageType == Enums.DamageType.Fire || damageType == Enums.DamageType.Shadow)
             {
-                TraitData traitData = Globals.Instance.GetTraitData(traitId);
-                if ((UnityEngine.Object)traitData != (UnityEngine.Object)null && traitId == traitOfInterest)
+                int _auxInt = _cast.damage;
+                LogDebug($"Handling Trait {traitId}: {traitName}: damage1");
+                int healAmount = Mathf.RoundToInt(_auxInt * 0.20f);
+                foreach(Hero hero in teamHero)
                 {
-                    Plugin.Log.LogDebug(debugBase + "Learn Real Magic inside conditions");
-                    Globals.Instance.SubClass[hero.SubclassName].HeroClassSecondary = Enums.HeroClass.Mage;
+                    if(!IsLivingHero(hero))
+                    {
+                        continue;
+                    }
+                    TraitHealHero(ref _hero, hero, healAmount,traitName);
+                    hero.SetAuraTrait(_hero,"zeal",1);
+
                 }
-
             }
-            return true;
-        }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), nameof(Character.DamageBonus))]
-        public static void DamageBonusPostfix(ref Character __instance, ref float[] __result, Enums.DamageType DT)
-        {
-            LogDebug("DamageBonusPostfix");
-            // __result is a float[] of [bonusFlatDamage, bonusPercentDamage]
-            if (!IsLivingHero(__instance) || AtOManager.Instance == null || MatchManager.Instance == null)
-                return;
-
-            string traitOfInterest = trait4a;
-            if (AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, traitOfInterest))// && DT == Enums.DamageType.All)
+            if(damageType2 == Enums.DamageType.Fire || damageType2 == Enums.DamageType.Shadow)
             {
-                int bonusDamage = 1;
-                float bonusPercentDamage = 10.0f;
-                __result[0] += bonusDamage;
-                __result[1] += bonusPercentDamage;
+                int _auxInt = _cast.damage2;
+                LogDebug($"Handling Trait {traitId}: {traitName}, damage2");
+                int healAmount = Mathf.RoundToInt(_auxInt * 0.20f);
+                foreach(Hero hero in teamHero)
+                {
+                    if(!IsLivingHero(hero))
+                    {
+                        continue;
+                    }
+                    TraitHealHero(ref _hero, hero, healAmount,traitName);
+                    hero.SetAuraTrait(_hero,"zeal",1);
+
+                }
             }
         }
-
-        [HarmonyPostfix]
-        [HarmonyPatch(typeof(Character), nameof(Character.GetTraitDamagePercentModifiers))]
-        public static void GetTraitDamagePercentModifiersPostfix(ref Character __instance, ref float __result, Enums.DamageType DamageType)
-        {
-            LogInfo("GetTraitDamagePercentModifiersPostfix");
-            // trait0: Gain 5% damage 
-            string traitOfInterest = trait0;
-            if (IsLivingHero(__instance) && AtOManager.Instance!= null && AtOManager.Instance.CharacterHaveTrait(__instance.SubclassName, traitOfInterest)&& MatchManager.Instance!=null)
-            {                
-                int percentToIncrease = 5;
-                __result += percentToIncrease;
-            }
-        }
-
-
 
         [HarmonyPostfix]
         [HarmonyPatch(typeof(AtOManager), "GlobalAuraCurseModificationByTraitsAndItems")]
@@ -215,21 +239,21 @@ namespace Daniel
 
             Character characterOfInterest = _type == "set" ? _characterTarget : _characterCaster;
             string traitOfInterest;
-
+            // trait 4a: Dark on heroes don't explode, and increase all healing received by 1% per charge. Healer Duality can be activated 4 times per turn.
             switch (_acId)
             {
-                case "burn":
-                    traitOfInterest = trait0;
-                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.None))
+                case "dark":
+                    traitOfInterest = trait4a;
+                    if (IfCharacterHas(characterOfInterest, CharacterHas.Trait, traitOfInterest, AppliesTo.Heroes))
                     {
-                        __result.ACName = "something";
+                        __result.ExplodeAtStacks = 0;    
+                        __result.DamageTypeWhenConsumed = Enums.DamageType.None;
+                        __result.DamageWhenConsumedPerCharge = 0;
+                        __result.HealReceivedPercentPerStack = 1;
                     }
                     break;
             }
 
         }
-
-
-
     }
 }
