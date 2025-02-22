@@ -2,6 +2,8 @@
 
 A hero mod, introducing Daniel, a fiend who seeks redemption for all and is capable with Shadow, Holy, and Fire magic. 
 
+They were designed by @oracleraven. See [this post](https://discordapp.com/channels/679706811108163701/1339879716919967757) for their original idea: 
+
 This currently does not include any events or quests related to Daniel except for those that apply too all heroes or all heroes of a given class.
 
 A couple of notes:
@@ -17,30 +19,30 @@ This mod relies on [Obeliskial Content](https://across-the-obelisk.thunderstore.
 <summary>Traits</summary>
 
 ### Level 1
-- Wisdom of The Ancients: Burn, Chill, and Spark Charges on enemies additionally apply -0.2% resistance to Holy Damage per charge. At the end of your turn, all heroes heal for 12% of the Burn Charges, Chill Charges, and Shock Charges in play. -This heal does not gain bonuses-
+- Repentant:	When you suffer Fire or Shadow damage, heal all heroes for 20% of that amount and gain 1 Zeal. -This heal does not gain bonuses-
 
 
 ### Level 2
 
-![Augur's Wrath](/Storm_Channeler.png)
+![Atonement](https://github.com/binbinmods/Daniel/blob/main/Assets/atonement.png?raw=true)
 
-![Augur's Blessing](/Waters_of_Life.png)
+![Infernal Fervor](https://github.com/binbinmods/Daniel/blob/main/Assets/infernalfervor.png?raw=true)
 
 ### Level 3
 
-- Magus Duality: When you play a Mage Card, reduce the cost of the highest cost Healer Card in your hand by 1 until discarded. When you play a Healer Card, reduce the cost of the highest cost Mage Card in your hand by 1 until discarded. (3 times / per turn)
-- Animist Energy: At the start of your turn, Dispel 3 targeting yourself, and reduce the cost of the highest cost card in your hand by 2 until discarded.
+- Healer Duality:	When you play a Healer card, reduce the cost of the highest cost Mage card in your hand by 1 until discarded. When you play a Mage card, reduce the cost of the highest cost Healer card in your hand by 1 until discarded. (3 times/turn)
+- Purgatory:	When you play a "Fire Spell" card Purge 1, "Holy Spell" card gain 1 Bless, "Shadow Spell" card increase curse charges on all monsters by 10%. (6 times/turn)
 
 ### Level 4
 
-![Elemental Focus](./Electric_Current.png)
+![Immanence](https://github.com/binbinmods/Daniel/blob/main/Assets/immanence.png?raw=true)
 
-![Bountiful Restoration](../Tears_of_the_Spririts.png)
+![Judgement Hour](https://github.com/binbinmods/Daniel/blob/main/Assets/judgementhour.png?raw=true)
 
 ### Level 5
 
-- Yggdrasil's Fury: Sanctify +1. All Damage done +20%. When you play a "Spell" card, Dispel 1 targeting yourself. (4 times / per turn).
-- Grove Warden's Mercy: Regeneration +1. When you play a "Healing Spell" card, Apply 2 Mitigate Charges to All Heroes. (2 times / per turn)
+- Dark Heaven:	Dark +2. Dark on heroes don't explode, and increase all healing received by 1% per charge. Healer Duality can be activated 4 times per turn.
+- Holy Hell:	At the end of your turn, grant 2 Bless and 2 Zeal to all heroes, and transform all Dark charges on heroes into Burn charges.
 
 </details>
 
@@ -63,7 +65,7 @@ This mod relies on [Obeliskial Content](https://across-the-obelisk.thunderstore.
 
 ## Support
 
-This has been updated for version 1.4.
+This has been updated for Across the Obelisk version 1.5.0.1.
 
 Hope you enjoy it and if have any issues, ping me in Discord or make a post in the **modding #support-and-requests** channel of the [official Across the Obelisk Discord](https://discord.gg/across-the-obelisk-679706811108163701).
 
