@@ -20,7 +20,7 @@ namespace Daniel
 
         public static List<string> simpleTraitList = ["trait0", "trait1a", "trait1b", "trait2a", "trait2b", "trait3a", "trait3b", "trait4a", "trait4b"];
 
-        public static List<string> myTraitList = (List<string>)simpleTraitList.Select(trait => subclassName + trait); // Needs testing
+        public static List<string> myTraitList = simpleTraitList.Select(trait => subclassName + trait).ToList(); // Needs testing
 
         
         static string trait0 = myTraitList[0];
@@ -63,10 +63,6 @@ namespace Daniel
             { // When you suffer Fire or Shadow damage, heal all heroes for 20% of that amount and gain 1 Zeal. -This heal does not gain bonuses-
                 string traitName = traitData.TraitName;
                 string traitId = _trait;
-                            
-                
-                
-                
             }
 
 
@@ -182,25 +178,30 @@ namespace Daniel
         [HarmonyPatch(typeof(CharacterItem), nameof(CharacterItem.ScrollCombatTextDamageNew))]
         public static void ScrollCombatTextDamageNewPostfix(ref CharacterItem __instance, CastResolutionForCombatText _cast)
         {
-            LogDebug("ScrollCombatTextDamageNewPostfix");
-            string traitId = trait0;
-            string traitName = "Repentant";
             if (MatchManager.Instance==null)
             {
                 return;
             }
-            
-            LogDebug($"Handling Trait {traitId}: {traitName}, pre traverse");
 
-            Hero[] teamHero = MatchManager.Instance.GetTeamHero();
+            LogDebug("ScrollCombatTextDamageNewPostfix");
+            string traitOfInterest = trait0;
+            string traitName = "Repentant";
+            
+
             Hero _hero = Traverse.Create(__instance).Field("_hero").GetValue<Hero>();
+            if(!IsLivingHero(_hero)||!_hero.HaveTrait(traitOfInterest))
+            {
+                return;
+            }
+            LogDebug($"Handling Trait {traitOfInterest}: {traitName}, pre traverse");
             Enums.DamageType damageType = _cast.damageType;
             Enums.DamageType damageType2 = _cast.damageType2;
+            Hero[] teamHero = MatchManager.Instance.GetTeamHero();
 
             if(damageType == Enums.DamageType.Fire || damageType == Enums.DamageType.Shadow)
             {
                 int _auxInt = _cast.damage;
-                LogDebug($"Handling Trait {traitId}: {traitName}: damage1");
+                LogDebug($"Handling Trait {traitOfInterest}: {traitName}: damage1");
                 int healAmount = Mathf.RoundToInt(_auxInt * 0.20f);
                 foreach(Hero hero in teamHero)
                 {
@@ -216,7 +217,7 @@ namespace Daniel
             if(damageType2 == Enums.DamageType.Fire || damageType2 == Enums.DamageType.Shadow)
             {
                 int _auxInt = _cast.damage2;
-                LogDebug($"Handling Trait {traitId}: {traitName}, damage2");
+                LogDebug($"Handling Trait {traitOfInterest}: {traitName}, damage2");
                 int healAmount = Mathf.RoundToInt(_auxInt * 0.20f);
                 foreach(Hero hero in teamHero)
                 {
