@@ -2,7 +2,7 @@
 
 A hero mod, introducing Daniel, a fiend who seeks redemption for all and is capable with Shadow, Holy, and Fire magic. 
 
-They were designed by @oracleraven. See [this post](https://discordapp.com/channels/679706811108163701/1339879716919967757) for their original idea: 
+They were designed by @oracleraven. See [this post](https://discordapp.com/channels/679706811108163701/1339879716919967757) for their original idea.
 
 This currently does not include any events or quests related to Daniel except for those that apply too all heroes or all heroes of a given class.
 
