@@ -1,3 +1,9 @@
+# 0.2.1
+
+Fixed OC crash
+
+Cardback no longer shares
+
 # 0.2.0
 
 Cleansing Fire now dispels dark
