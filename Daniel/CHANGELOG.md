@@ -1,3 +1,7 @@
+# 0.2.2
+
+Actually fixed cardback this time
+
 # 0.2.1
 
 Fixed OC crash

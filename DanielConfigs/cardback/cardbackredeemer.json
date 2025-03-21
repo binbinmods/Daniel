@@ -6,10 +6,10 @@
     "CardbackOrder": 1000,
     "CardbackSprite": "cardbackredeemer",
     "CardbackSubclass": "redeemer",
-    "Locked": true,
+    "Locked": false,
     "ObeliskLevel": 0,
     "RankLevel": 0,
-    "ShowIfLocked": true,
+    "ShowIfLocked": false,
     "Sku": "",
     "SteamStat": ""
 }

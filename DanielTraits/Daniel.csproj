@@ -6,7 +6,7 @@
 	<Product>Daniel</Product>
     <AssemblyName>com.binbin.Daniel</AssemblyName>
     <Description>Daniel, The Redeemer</Description>
-    <Version>0.2.1</Version>
+    <Version>0.2.2</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -43,6 +43,8 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../../../../plugins" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="../Daniel/BepInEx/plugins" />
+    <Exec Command="/usr/bin/python3 &quot;$(ProjectDir)../ship_mod.py&quot;" />
+
   </Target>
 
 </Project>
