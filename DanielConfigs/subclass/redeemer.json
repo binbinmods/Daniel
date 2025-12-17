@@ -65,5 +65,6 @@
     "Trait3A": "redeemertrait3a",
     "Trait3B": "redeemertrait3b",
     "Trait4A": "redeemertrait4a",
-    "Trait4B": "redeemertrait4b"
+    "Trait4B": "redeemertrait4b",
+    "CardsSingularity": ["redeemercleansingfire", "innercombustion","darkpact", "shadowflame", "redemption", "innerfire", "holyfire","searingnova","fireblast","searingtouch","fireball","flamestrike","unholystorm","blackkarma","condemnation"]
 }

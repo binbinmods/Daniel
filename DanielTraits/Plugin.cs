@@ -2,8 +2,8 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using static Obeliskial_Essentials.Essentials;
-using Obeliskial_Essentials;
 using System.IO;
+using static Obeliskial_Essentials.CardDescriptionNew;
 using UnityEngine;
 using System;
 using static Daniel.Traits;
@@ -47,7 +47,10 @@ namespace Daniel
                 _type: ["content", "hero", "trait"]
             );
             // apply patches
-
+            string t = $"For every {medsNumFormatItem(4)} {medsSpriteText("dark")} charges you apply, apply {medsNumFormatItem(1)} {medsSpriteText("bless")} {medsNumFormatItem(1)} {medsSpriteText("burn")} to all heroes";
+            string card = "atonement";
+            AddTextToCardDescription(t, TextLocation.End, card, includeAB: true);
+            
 
             harmony.PatchAll();
         }
@@ -58,7 +61,7 @@ namespace Daniel
             {
                 Log.LogDebug(debugBase + msg);
             }
-            
+
         }
         internal static void LogInfo(string msg)
         {

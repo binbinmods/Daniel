@@ -1,3 +1,17 @@
+# 0.3.0
+
+Update for AtO v1.7.0
+
+# 0.2.4
+
+Update for AtO v1.6.22
+
+# 0.2.3
+
+Added Singularity Deck
+
+<!-- Added appropriate text for Atonement -->
+
 # 0.2.2
 
 Actually fixed cardback this time
